@@ -17,18 +17,23 @@ export function ProductItem({
 
   return (
     <div className="grid md:grid-cols-2 gap-6 bg-white dark:bg-slate-900 rounded-2xl shadow">
-      <ProductName name={product.name} onUpdate={onUpdateName} />
+      <div className="md:col-span-2">
+        <ProductName name={product.name} onUpdate={onUpdateName} />
+      </div>
       <section>
         <ProductForm product={product} updateProduct={updateProduct} />
-        <button
-          onClick={() => removeProduct(product.id)}
-          className="mt-4 rounded-xl px-4 py-2 bg-red-100 dark:bg-red-800 hover:bg-red-200 transition"
-        >
-          Удалить продукт
-        </button>
       </section>
 
       <Results product={product} />
+
+      <div className="md:col-span-2">
+        <button
+          onClick={() => removeProduct(product.id)}
+          className="mt-4 rounded-xl px-4 py-2 bg-red-100 dark:bg-red-800 hover:bg-red-200 transition cursor-pointer"
+        >
+          Удалить продукт
+        </button>
+      </div>
     </div>
   );
 }
@@ -73,7 +78,7 @@ function ProductName({
 
       <button
         onClick={onClick}
-        className="rounded-xl px-4 py-2 bg-teal-500 hover:bg-teal-800 transition"
+        className="rounded-xl px-4 py-2 bg-teal-500 hover:bg-teal-800 transition cursor-pointer"
       >
         {edit ? "Сохранить" : "Переименовать"}
       </button>
