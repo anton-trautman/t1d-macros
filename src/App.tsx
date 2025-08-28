@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { AppLayout } from "./shared/ui/layout";
-import { Products } from "./features/products";
-import { Summary } from "./shared/ui/summary";
+import { AppLayout } from "@/shared/ui/layout";
+import { Products } from "@/features/products";
+import { Summary } from "@/shared/ui/summary";
+import { ThemeProvider } from "@/shared/components/theme-provider";
+import { Button } from "@/shared/components/ui/button";
+import { ListOptions } from "@/shared/ui/list-options";
 
 const initState = [
   {
@@ -43,35 +46,23 @@ export default function App() {
   const onReset = () => setProducts(initState);
 
   return (
-    <AppLayout>
-      <ResetButton onClick={onReset} />
-      <Products
-        products={products}
-        updateProduct={updateProduct}
-        removeProduct={removeProduct}
-      />
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <AppLayout>
+        <ListOptions onReset={onReset} />
+        <Products
+          products={products}
+          updateProduct={updateProduct}
+          removeProduct={removeProduct}
+        />
 
-      <div className="my-4">
-        <button
-          onClick={addProduct}
-          className="rounded-2xl  bg-white dark:bg-teal-700 px-4 py-2 shadow-sm hover:shadow transition"
-        >
-          ➕ Добавить продукт
-        </button>
-      </div>
+        <div className="my-4">
+          <Button variant={"default"} onClick={addProduct}>
+            ➕ Добавить продукт
+          </Button>
+        </div>
 
-      <Summary products={products} />
-    </AppLayout>
-  );
-}
-
-function ResetButton({ onClick }: { onClick: VoidFunction }) {
-  return (
-    <button
-      onClick={onClick}
-      className="rounded-2xl bg-red-200  dark:bg-red-800 px-4 py-2 shadow-sm hover:shadow transition"
-    >
-      Очистить
-    </button>
+        <Summary products={products} />
+      </AppLayout>
+    </ThemeProvider>
   );
 }

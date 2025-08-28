@@ -1,8 +1,20 @@
 import type { Product } from "../../../types";
 import { Results } from "./results";
 import { ProductForm } from "./product-form";
-import { useState } from "react";
-
+import { useEffect, useId, useState } from "react";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import { Input } from "@/shared/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
+import { Separator } from "@radix-ui/react-separator";
+import { Trash2, Edit3, Check } from "lucide-react";
+import { useDebounceCallback } from "usehooks-ts";
 export function ProductItem({
   product,
   updateProduct,
@@ -14,27 +26,26 @@ export function ProductItem({
 }) {
   const onUpdateName = (name: string) =>
     updateProduct(product.id, "name", name);
+  const debounced = useDebounceCallback(onUpdateName, 500);
 
   return (
-    <div className="grid md:grid-cols-2 gap-6 bg-white dark:bg-slate-900 rounded-2xl shadow">
-      <div className="md:col-span-2">
-        <ProductName name={product.name} onUpdate={onUpdateName} />
-      </div>
-      <section>
+    <Card className="w-full ">
+      <ProductName name={product.name} onUpdate={debounced} />
+      <Separator />
+      <CardContent className="flex flex-col md:flex-row gap-5 w-full">
         <ProductForm product={product} updateProduct={updateProduct} />
-      </section>
 
-      <Results product={product} />
-
-      <div className="md:col-span-2">
-        <button
+        <Results product={product} />
+      </CardContent>
+      <CardFooter>
+        <Button
           onClick={() => removeProduct(product.id)}
-          className="mt-4 rounded-xl px-4 py-2 bg-red-100 dark:bg-red-800 hover:bg-red-200 transition cursor-pointer"
+          variant={"destructive"}
         >
-          Удалить продукт
-        </button>
-      </div>
-    </div>
+          <Trash2 /> <span>Удалить</span>
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
 
@@ -45,6 +56,7 @@ function ProductName({
   name: string;
   onUpdate: (name: string) => void;
 }) {
+  const id = useId();
   const [edit, setEdit] = useState(false);
   const [nextName, setNextName] = useState(() => name);
 
@@ -57,31 +69,38 @@ function ProductName({
     }
   };
 
+  useEffect(() => {
+    if (name) {
+      setNextName(name);
+    }
+  }, [name]);
+
   return (
-    <div className="w-full flex flex-row justify-between items-center">
-      {edit ? (
-        <div>
-          <input
+    <CardHeader>
+      <CardTitle className="my-auto">
+        {edit ? (
+          <Input
             inputMode="text"
             value={nextName}
             autoFocus
             onChange={(e) => setNextName(e.target.value)}
-            className="w-full rounded-xl border border-slate-300 dark:border-slate-600
-                   bg-white dark:bg-slate-800
-                   px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500
-                   text-slate-900 dark:text-slate-100"
+            id={id}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && nextName?.length) {
+                onClick();
+              }
+            }}
           />
-        </div>
-      ) : (
-        <h2 className="text-xl font-semibold ">{nextName}</h2>
-      )}
+        ) : (
+          <h2 className="text-3xl ">{nextName}</h2>
+        )}
+      </CardTitle>
 
-      <button
-        onClick={onClick}
-        className="rounded-xl px-4 py-2 bg-teal-500 hover:bg-teal-800 transition cursor-pointer"
-      >
-        {edit ? "Сохранить" : "Переименовать"}
-      </button>
-    </div>
+      <CardAction>
+        <Button onClick={onClick} variant={"outline"} size={"icon"}>
+          {edit ? <Check /> : <Edit3 />}
+        </Button>
+      </CardAction>
+    </CardHeader>
   );
 }

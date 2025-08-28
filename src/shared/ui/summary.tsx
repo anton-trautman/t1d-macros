@@ -1,21 +1,44 @@
 import { useMemo } from "react";
 import type { Product } from "../../types";
 import { calcData, r1 } from "../../utils";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import { useCopyToClipboard } from "usehooks-ts";
+import { Button } from "@/shared/components/ui/button";
+import { Copy } from "lucide-react";
 
 export function Summary({ products }: { products: Product[] }) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, copyToClipboard] = useCopyToClipboard();
+
+  const handleCopy = (textToCopy: string) => {
+    // Attempt to copy text to the clipboard
+    copyToClipboard(textToCopy).then((success) => {
+      if (success) {
+        console.log(`Text "${textToCopy}" copied to clipboard successfully.`);
+      } else {
+        console.error("Failed to copy text to clipboard.");
+      }
+    });
+  };
   const totals = useMemo(() => {
     return products.reduce(
       (acc, p) => {
         const d = calcData(p.carbs, p.protein, p.fat, p.weight);
-        acc.cG += d.cG;
-        acc.pG += d.pG;
-        acc.fG += d.fG;
-        acc.kcalC += d.kcalC;
-        acc.kcalP += d.kcalP;
-        acc.kcalF += d.kcalF;
-        acc.kcalTotal += d.kcalTotal;
-        acc.gTotal += d.gTotal;
-        acc.w += d.w;
+        acc.cG += d.carbs.grams;
+        acc.pG += d.protein.grams;
+        acc.fG += d.fat.grams;
+        acc.kcalC += d.carbs.kcal;
+        acc.kcalP += d.protein.kcal;
+        acc.kcalF += d.fat.kcal;
+        acc.kcalTotal += d.total.kcal;
+        acc.gTotal += d.total.grams;
+        acc.w += d.weight;
         return acc;
       },
       {
@@ -31,14 +54,27 @@ export function Summary({ products }: { products: Product[] }) {
       }
     );
   }, [products]);
+
   return (
     <>
       {/* Summary */}
-      <section className="bg-white dark:bg-slate-900 rounded-2xl shadow ">
-        <h2 className="text-lg font-semibold mb-3">
-          Краткая сводка по всем продуктам
-        </h2>
-        <div className="grid sm:grid-cols-2 gap-4">
+      <Card className="">
+        <CardHeader className="text-lg font-semibold mb-3">
+          <CardTitle>Краткая сводка по всем продуктам</CardTitle>
+          <CardAction>
+            <Button
+              variant={"outline"}
+              onClick={() =>
+                handleCopy(
+                  `${totals.cG}g carbs \n${totals.pG}g proteint (${totals.kcalP} kcal) \n${totals.fG}g fat (${totals.kcalF} kcal)`
+                )
+              }
+            >
+              <Copy /> Копировать
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-2.5">
           <SummaryItem label="Общий вес" value={`${r1(totals.w, 0)} г`} />
           <SummaryItem
             label="Углеводы всего"
@@ -56,8 +92,8 @@ export function Summary({ products }: { products: Product[] }) {
             label="Итого калорий"
             value={`${r1(totals.kcalTotal, 0)} ккал`}
           />
-        </div>
-      </section>
+        </CardContent>
+      </Card>
     </>
   );
 }
@@ -65,7 +101,7 @@ export function Summary({ products }: { products: Product[] }) {
 function SummaryItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between rounded-xl border p-3">
-      <span className="text-slate-600 dark:text-slate-400">{label}</span>
+      <span className="">{label}</span>
       <span className="font-medium">{value}</span>
     </div>
   );

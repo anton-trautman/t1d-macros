@@ -2,7 +2,7 @@ import type { PropsWithChildren } from "react";
 
 export function AppLayout({ children }: PropsWithChildren) {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 p-6 transition-colors">
+    <div className="min-h-screen p-6">
       <div className="mx-auto max-w-5xl">
         <header className="mb-6">
           <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">

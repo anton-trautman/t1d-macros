@@ -42,20 +42,25 @@ export function calcData(
   const pctF = kcalTotal ? (kcalF / kcalTotal) * 100 : 0;
 
   return {
-    c100,
-    p100,
-    f100,
-    w,
-    cG,
-    pG,
-    fG,
-    kcalC,
-    kcalP,
-    kcalF,
-    kcalTotal,
-    gTotal,
-    pctC,
-    pctP,
-    pctF,
+    carbs: {
+      percent: pctC,
+      kcal: kcalC,
+      grams: cG,
+    },
+    protein: {
+      percent: pctP,
+      kcal: kcalP,
+      grams: pG,
+    },
+    fat: {
+      percent: pctF,
+      kcal: kcalF,
+      grams: fG,
+    },
+    total: {
+      kcal: kcalTotal,
+      grams: gTotal,
+    },
+    weight: w,
   };
 }

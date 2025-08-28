@@ -1,4 +1,4 @@
-import type { Product } from "../../../types";
+import type { Product } from "@/types";
 import { InputField } from "./input-field";
 
 export function ProductForm({
@@ -10,7 +10,7 @@ export function ProductForm({
 }) {
   return (
     <>
-      <div className="grid grid-cols-1 gap-4">
+      <div className="flex flex-col gap-4 w-full">
         <InputField
           label="Углеводы на 100 г (г)"
           value={product.carbs}

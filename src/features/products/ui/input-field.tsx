@@ -1,3 +1,7 @@
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { useId } from "react";
+
 export function InputField({
   label,
   value,
@@ -7,19 +11,15 @@ export function InputField({
   value: string;
   onChange: (v: string) => void;
 }) {
+  const id = useId();
   return (
-    <div>
-      <label className="block text-sm text-slate-600 dark:text-slate-300 mb-1">
-        {label}
-      </label>
-      <input
-        inputMode="decimal"
+    <div className="grid w-full max-w-sm items-center gap-3">
+      <Label htmlFor={id}>{label}</Label>
+      <Input
+        inputMode="numeric"
         value={value}
+        id={id}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-slate-300 dark:border-slate-600
-                   bg-white dark:bg-slate-800
-                   px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500
-                   text-slate-900 dark:text-slate-100"
       />
     </div>
   );
