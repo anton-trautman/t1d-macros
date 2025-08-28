@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [tailwindcss(), react()],
-  base: "/",
+  base: "/t1d-macros",
 
   resolve: {
     alias: [{ find: "@", replacement: path.resolve(__dirname, "./src") }],
