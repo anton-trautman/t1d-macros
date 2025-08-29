@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://anton-trautman.github.io/t1d-macros/",
+  "homepage": "https://anton-trautman.github.io/t1d-macros",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

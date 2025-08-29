@@ -4,7 +4,7 @@ import { VitePWA } from "vite-plugin-pwa";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
-  base: "/t1d-macros",
+  base: "/",
   plugins: [
     tailwindcss(),
     react(),
@@ -14,8 +14,8 @@ export default defineConfig({
       manifest: {
         name: "Food Impact",
         short_name: "Food Impact",
+        description: "Kcal calculator ",
         theme_color: "#0d9488",
-        orientation: "portrait",
         icons: [
           {
             src: "icon-192.png",
