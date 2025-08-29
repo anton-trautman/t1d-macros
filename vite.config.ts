@@ -4,7 +4,7 @@ import { VitePWA } from "vite-plugin-pwa";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
-  base: "/",
+  base: "/t1d-macros/",
   plugins: [
     tailwindcss(),
     react(),
