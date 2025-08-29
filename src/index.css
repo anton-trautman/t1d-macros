@@ -108,7 +108,11 @@
   --sidebar-primary-foreground: var(--color-teal-50);
   --sidebar-ring: var(--color-teal-900);
 
-
+  --chart-1: var(--color-teal-300);
+  --chart-2: var(--color-teal-500);
+  --chart-3: var(--color-teal-600);
+  --chart-4: var(--color-teal-700);
+  --chart-5: var(--color-teal-800);
 
   --sidebar: oklch(0.21 0.006 285.885);
   --sidebar-foreground: oklch(0.985 0 0);

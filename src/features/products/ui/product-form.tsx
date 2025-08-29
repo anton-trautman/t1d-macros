@@ -15,16 +15,19 @@ export function ProductForm({
           label="Углеводы на 100 г (г)"
           value={product.carbs}
           onChange={(v) => updateProduct(product.id, "carbs", v)}
+          inputMode="decimal"
         />
         <InputField
           label="Белки на 100 г (г)"
           value={product.protein}
           onChange={(v) => updateProduct(product.id, "protein", v)}
+          inputMode="decimal"
         />
         <InputField
           label="Жиры на 100 г (г)"
           value={product.fat}
           onChange={(v) => updateProduct(product.id, "fat", v)}
+          inputMode="decimal"
         />
         <InputField
           label="Вес продукта (г)"

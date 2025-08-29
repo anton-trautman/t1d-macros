@@ -12,18 +12,18 @@ export function Results({ product }: { product: Product }) {
 
   const chartData = [
     {
-      // fill: "var(--color-carbs)",
+      fill: "var(--color-carbs)",
       element: "carbs",
       ...d.carbs,
     },
     {
-      // fill: "var(--color-protein)",
+      fill: "var(--color-protein)",
 
       element: "protein",
       ...d.protein,
     },
     {
-      // fill: "var(--color-fat)",
+      fill: "var(--color-fat)",
 
       element: "fat",
       ...d.fat,
@@ -54,7 +54,7 @@ export function Results({ product }: { product: Product }) {
         </div>
 
         {!!d.carbs.grams || !!d.fat.grams || !!d.protein.grams ? (
-          <ResultsChart chartData={chartData} />
+          <ResultsChart chartData={chartData} totalKcal={d.total.kcal} />
         ) : null}
       </section>
     </>

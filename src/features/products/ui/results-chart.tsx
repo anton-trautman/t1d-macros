@@ -1,9 +1,9 @@
 import { ChartContainer, type ChartConfig } from "@/shared/components/ui/chart";
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+import { Label, LabelList, Pie, PieChart } from "recharts";
 const chartConfig = {
   carbs: {
     label: "Углеводы",
-    color: "var(--chart-1)",
+    color: " var(--color-teal-300)",
   },
   protein: {
     label: "Белки",
@@ -11,11 +11,12 @@ const chartConfig = {
   },
   fat: {
     label: "Жиры",
-    color: "var(--chart-3)",
+    color: "var(--destructive)",
   },
 } satisfies ChartConfig;
 export function ResultsChart({
   chartData,
+  totalKcal,
 }: {
   chartData: {
     percent: number;
@@ -23,59 +24,55 @@ export function ResultsChart({
     grams: number;
     element: string;
   }[];
+  totalKcal: number;
 }) {
   return (
     <>
       <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-        {/* <PieChart>
-              <Pie
-                data={chartData}
-                dataKey="kcal"
-                innerRadius={60}
-                strokeWidth={2}
-              >
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
-                        <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                        >
-                          <tspan
-                            x={viewBox.cx}
-                            y={viewBox.cy}
-                            className="fill-foreground text-3xl font-bold"
-                          >
-                            {d.total.kcal}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) + 24}
-                            className="fill-muted-foreground"
-                          >
-                            kcal
-                          </tspan>
-                        </text>
-                      );
-                    }
-                  }}
-                />
-                <LabelList
-                  dataKey="kcal"
-                  className="fill-background"
-                  stroke="none"
-                  fontSize={12}
-                  // formatter={(value: keyof typeof chartConfig) =>
-                  //   chartConfig[value]?.label
-                  // }
-                />
-              </Pie>
-            </PieChart> */}
+        <PieChart>
+          <Pie data={chartData} dataKey="kcal" innerRadius={60} strokeWidth={2}>
+            <Label
+              content={({ viewBox }) => {
+                if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                  return (
+                    <text
+                      x={viewBox.cx}
+                      y={viewBox.cy}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                    >
+                      <tspan
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        className="fill-foreground text-3xl font-bold"
+                      >
+                        {totalKcal}
+                      </tspan>
+                      <tspan
+                        x={viewBox.cx}
+                        y={(viewBox.cy || 0) + 24}
+                        className="fill-muted-foreground"
+                      >
+                        kcal
+                      </tspan>
+                    </text>
+                  );
+                }
+              }}
+            />
+            <LabelList
+              dataKey="kcal"
+              className="fill-background"
+              stroke="none"
+              fontSize={12}
+              // formatter={(value: keyof typeof chartConfig) =>
+              //   chartConfig[value]?.label
+              // }
+            />
+          </Pie>
+        </PieChart>
 
-        <BarChart accessibilityLayer data={chartData} margin={{ top: 50 }}>
+        {/* <BarChart accessibilityLayer data={chartData} margin={{ top: 50 }}>
           <CartesianGrid vertical={false} />
           <XAxis
             dataKey="element"
@@ -103,7 +100,7 @@ export function ResultsChart({
               fontSize={20}
             />
           </Bar>
-        </BarChart>
+        </BarChart> */}
       </ChartContainer>
     </>
   );
