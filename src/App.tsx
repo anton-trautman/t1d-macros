@@ -16,6 +16,7 @@ const initState = [
     weight: "100",
   },
 ];
+
 export default function App() {
   const [products, setProducts] = useState(initState);
 

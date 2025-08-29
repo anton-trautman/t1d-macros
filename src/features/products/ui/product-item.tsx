@@ -1,7 +1,14 @@
 import type { Product } from "../../../types";
 import { Results } from "./results";
 import { ProductForm } from "./product-form";
-import { useEffect, useId, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ChangeEvent,
+} from "react";
 import {
   Card,
   CardAction,
@@ -14,7 +21,7 @@ import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
 import { Separator } from "@radix-ui/react-separator";
 import { Trash2, Edit3, Check } from "lucide-react";
-import { useDebounceCallback } from "usehooks-ts";
+import { useDebounceCallback, useOnClickOutside } from "usehooks-ts";
 export function ProductItem({
   product,
   updateProduct,
@@ -75,25 +82,50 @@ function ProductName({
     }
   }, [name]);
 
+  const onEditEnd = useCallback(
+    (e?: MouseEvent | TouchEvent | FocusEvent) => {
+      e?.stopPropagation();
+
+      if (!edit) {
+        return;
+      }
+
+      if (nextName && nextName !== name) {
+        onUpdate(nextName);
+      }
+      setEdit(false);
+    },
+    [edit, name, nextName, onUpdate]
+  );
+
+  const containerRef = useRef(null);
+
+  // @ts-expect-error ref type
+  useOnClickOutside([containerRef], onEditEnd);
+
+  const contentProps = edit
+    ? {
+        onChange: (e: ChangeEvent<HTMLInputElement>) => {
+          const trimmedValue = e.target.value?.trimStart();
+
+          setNextName(trimmedValue);
+        },
+        value: nextName,
+        autoFocus: true,
+        onFocus: (e: ChangeEvent<HTMLInputElement>) => e.target.select(),
+        id,
+      }
+    : {
+        children: nextName,
+        className: "text-3xl",
+      };
+
+  const Component = edit ? Input : "h2";
+
   return (
     <CardHeader>
       <CardTitle className="my-auto">
-        {edit ? (
-          <Input
-            inputMode="text"
-            value={nextName}
-            autoFocus
-            onChange={(e) => setNextName(e.target.value)}
-            id={id}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && nextName?.length) {
-                onClick();
-              }
-            }}
-          />
-        ) : (
-          <h2 className="text-3xl ">{nextName}</h2>
-        )}
+        <Component {...contentProps} ref={containerRef} />
       </CardTitle>
 
       <CardAction>
