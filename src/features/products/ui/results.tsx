@@ -1,8 +1,9 @@
-import { ResultsChart } from "@/features/products/ui/results-chart";
 import type { Product } from "@/types";
 import { calcData, r1 } from "@/utils";
 
-import { useMemo } from "react";
+import { lazy, Suspense, useMemo } from "react";
+
+const ResultsChart = lazy(() => import("./results-chart"));
 
 export function Results({ product }: { product: Product }) {
   const d = useMemo(
@@ -54,7 +55,9 @@ export function Results({ product }: { product: Product }) {
         </div>
 
         {!!d.carbs.grams || !!d.fat.grams || !!d.protein.grams ? (
-          <ResultsChart chartData={chartData} totalKcal={d.total.kcal} />
+          <Suspense>
+            <ResultsChart chartData={chartData} totalKcal={d.total.kcal} />
+          </Suspense>
         ) : null}
       </section>
     </>

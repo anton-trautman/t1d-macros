@@ -14,7 +14,7 @@ const chartConfig = {
     color: "var(--destructive)",
   },
 } satisfies ChartConfig;
-export function ResultsChart({
+export default function ResultsChart({
   chartData,
   totalKcal,
 }: {

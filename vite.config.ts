@@ -12,11 +12,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "apple-touch-icon.png", "mask-icon.svg"],
       manifest: {
-        name: "T1D Food Impact",
+        name: "Food Impact",
         short_name: "Food Impact",
-        start_url: ".",
-        display: "standalone",
-        background_color: "#f8fafc",
         theme_color: "#0d9488",
         orientation: "portrait",
         icons: [
