@@ -58,14 +58,20 @@ export default function App() {
         />
 
         <div className="my-4">
-          <Button variant={"default"} onClick={addProduct}>
-            ➕ Добавить продукт
-          </Button>
+          <AddProduct onClick={addProduct} />
         </div>
 
         <Summary products={products} />
         <Toaster />
       </AppLayout>
     </ThemeProvider>
+  );
+}
+
+function AddProduct({ onClick }: { onClick: VoidFunction }) {
+  return (
+    <Button variant={"default"} onClick={onClick}>
+      ➕ Добавить продукт
+    </Button>
   );
 }
