@@ -5,6 +5,7 @@ import { Summary } from "@/shared/ui/summary";
 import { ThemeProvider } from "@/shared/components/theme-provider";
 import { Button } from "@/shared/components/ui/button";
 import { ListOptions } from "@/shared/ui/list-options";
+import { Toaster } from "@/shared/components/ui/sonner";
 
 const initState = [
   {
@@ -63,6 +64,7 @@ export default function App() {
         </div>
 
         <Summary products={products} />
+        <Toaster />
       </AppLayout>
     </ThemeProvider>
   );

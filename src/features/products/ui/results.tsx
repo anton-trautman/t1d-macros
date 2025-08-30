@@ -1,5 +1,5 @@
 import type { Product } from "@/types";
-import { calcData, r1 } from "@/utils";
+import { calcData, r1 } from "@/lib/kcal-calc";
 
 import { lazy, Suspense, useMemo } from "react";
 

@@ -17,6 +17,7 @@ export function AppLayout({ children }: PropsWithChildren) {
             браузера «Добавить на главный экран»).
           </p>
         </header>
+        
         {children}
         <footer className="text-xs text-slate-500 mt-6">
           © {new Date().getFullYear()} T1D Food Impact · Сделано с заботой 💙

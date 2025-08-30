@@ -24,17 +24,17 @@ export function calcData(
   const f100 = clamp(parseNum(fat100), 0, 100);
   const w = clamp(parseNum(weight), 0, 5000);
 
-  const factor = w / 100;
+  const factor = r1(w / 100, 2);
 
   const cG = c100 * factor;
   const pG = p100 * factor;
   const fG = f100 * factor;
 
-  const kcalC = cG * 4;
-  const kcalP = pG * 4;
-  const kcalF = fG * 9;
+  const kcalC = r1(cG * 4, 2);
+  const kcalP = r1(pG * 4, 2);
+  const kcalF = r1(fG * 9, 2);
 
-  const kcalTotal = kcalC + kcalP + kcalF;
+  const kcalTotal = r1(kcalC + kcalP + kcalF, 2);
   const gTotal = cG + pG + fG;
 
   const pctC = kcalTotal ? (kcalC / kcalTotal) * 100 : 0;

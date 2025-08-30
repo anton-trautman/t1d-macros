@@ -1,17 +1,21 @@
 import { ChartContainer, type ChartConfig } from "@/shared/components/ui/chart";
-import { Label, LabelList, Pie, PieChart } from "recharts";
+import { Cell, Label, LabelList, Pie, PieChart } from "recharts";
+
+const c1 = "oklch(0.70 0.19 48)";
+const c2 = "oklch(0.75 0.14 233)";
+const c3 = "oklch(0.54 0.25 293)";
 const chartConfig = {
   carbs: {
     label: "Углеводы",
-    color: " var(--color-teal-300)",
+    color: c1,
   },
   protein: {
     label: "Белки",
-    color: "var(--chart-2)",
+    color: c2,
   },
   fat: {
     label: "Жиры",
-    color: "var(--destructive)",
+    color: c3,
   },
 } satisfies ChartConfig;
 export default function ResultsChart({
@@ -28,9 +32,38 @@ export default function ResultsChart({
 }) {
   return (
     <>
-      <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+      <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
         <PieChart>
-          <Pie data={chartData} dataKey="kcal" innerRadius={60} strokeWidth={2}>
+          <defs>
+            <linearGradient id="fillCarbs">
+              <stop offset="5%" stopColor={c1} stopOpacity={0.8} />
+              <stop offset="95%" stopColor={c1} stopOpacity={0.5} />
+            </linearGradient>
+            <linearGradient id="fillProtein">
+              <stop offset="5%" stopColor={c2} stopOpacity={0.8} />
+              <stop offset="95%" stopColor={c2} stopOpacity={0.5} />
+            </linearGradient>
+            <linearGradient id="fillFat">
+              <stop offset="5%" stopColor={c3} stopOpacity={0.8} />
+              <stop offset="95%" stopColor={c3} stopOpacity={0.5} />
+            </linearGradient>
+            {/* <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="5%"
+                stopColor="var(--color-mobile)"
+                stopOpacity={0.8}
+              />
+              <stop
+                offset="95%"
+                stopColor="var(--color-mobile)"
+                stopOpacity={0.1}
+              />
+            </linearGradient> */}
+          </defs>
+          <Pie data={chartData} dataKey="kcal" innerRadius={70} strokeWidth={2}>
+            <Cell fill="url(#fillCarbs)" />
+            <Cell fill="url(#fillProtein)" />
+            <Cell fill="url(#fillFat)" />
             <Label
               content={({ viewBox }) => {
                 if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -62,8 +95,9 @@ export default function ResultsChart({
             />
             <LabelList
               dataKey="kcal"
-              className="fill-background"
+              className="fill-foreground "
               stroke="none"
+              strokeWidth={2}
               fontSize={12}
               // formatter={(value: keyof typeof chartConfig) =>
               //   chartConfig[value]?.label

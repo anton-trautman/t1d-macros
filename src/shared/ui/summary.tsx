@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import type { Product } from "../../types";
-import { calcData, r1 } from "../../utils";
+import type { Product } from "@/types";
+import { calcData, r1 } from "@/lib/kcal-calc";
 import {
   Card,
   CardAction,
@@ -11,7 +11,7 @@ import {
 import { useCopyToClipboard } from "usehooks-ts";
 import { Button } from "@/shared/components/ui/button";
 import { Copy } from "lucide-react";
-
+import { toast } from "sonner";
 export function Summary({ products }: { products: Product[] }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, copyToClipboard] = useCopyToClipboard();
@@ -21,7 +21,10 @@ export function Summary({ products }: { products: Product[] }) {
     copyToClipboard(textToCopy).then((success) => {
       if (success) {
         console.log(`Text "${textToCopy}" copied to clipboard successfully.`);
+        toast.success("Скопировано");
       } else {
+        toast.error("не удалось скопировать");
+
         console.error("Failed to copy text to clipboard.");
       }
     });
@@ -55,6 +58,22 @@ export function Summary({ products }: { products: Product[] }) {
     );
   }, [products]);
 
+  const report = [
+    { label: "Общий вес", value: `${r1(totals.w, 0)} г` },
+    {
+      label: "Углеводы всего",
+      value: `${r1(totals.cG, 1)} г (${r1(totals.kcalC, 0)} ккал)`,
+    },
+    {
+      label: "Белки всего",
+      value: `${r1(totals.pG, 1)} г (${r1(totals.kcalP, 0)} ккал)`,
+    },
+    {
+      label: "Жиры всего",
+      value: `${r1(totals.fG, 1)} г (${r1(totals.kcalF, 0)} ккал)`,
+    },
+    { label: "Итого калорий", value: `${r1(totals.kcalTotal, 0)} ккал` },
+  ];
   return (
     <>
       {/* Summary */}
@@ -66,7 +85,11 @@ export function Summary({ products }: { products: Product[] }) {
               variant={"outline"}
               onClick={() =>
                 handleCopy(
-                  `${totals.cG}g carbs \n${totals.pG}g proteint (${totals.kcalP} kcal) \n${totals.fG}g fat (${totals.kcalF} kcal)`
+                  `${totals.cG}g carbs \n${report
+                    .map((item) => `${item.label} - ${item.value}`)
+                    .join("\n")}}\n${products
+                    .map((i) => `${i.name} (${i.weight}г)`)
+                    .join("\n")}`
                 )
               }
             >
@@ -75,23 +98,13 @@ export function Summary({ products }: { products: Product[] }) {
           </CardAction>
         </CardHeader>
         <CardContent className="flex flex-col gap-2.5">
-          <SummaryItem label="Общий вес" value={`${r1(totals.w, 0)} г`} />
-          <SummaryItem
-            label="Углеводы всего"
-            value={`${r1(totals.cG, 1)} г (${r1(totals.kcalC, 0)} ккал)`}
-          />
-          <SummaryItem
-            label="Белки всего"
-            value={`${r1(totals.pG, 1)} г (${r1(totals.kcalP, 0)} ккал)`}
-          />
-          <SummaryItem
-            label="Жиры всего"
-            value={`${r1(totals.fG, 1)} г (${r1(totals.kcalF, 0)} ккал)`}
-          />
-          <SummaryItem
-            label="Итого калорий"
-            value={`${r1(totals.kcalTotal, 0)} ккал`}
-          />
+          {report.map((item) => (
+            <SummaryItem
+              key={item.label}
+              label={item.label}
+              value={item.value}
+            />
+          ))}
         </CardContent>
       </Card>
     </>
